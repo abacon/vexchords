@@ -17,8 +17,8 @@ ChordBox = function(paper, x, y, width, height) {
 
   this.width = (!width) ? 100 : width;
   this.height = (!height) ? 100 : height;
-  this.num_strings = 6;
-  this.num_frets = 5;
+  this.num_strings = 4;
+  this.num_frets = 9;
 
   this.spacing = this.width / (this.num_strings);
   this.fret_spacing = (this.height)  / (this.num_frets + 2);
@@ -28,7 +28,7 @@ ChordBox = function(paper, x, y, width, height) {
   this.y += this.fret_spacing;
 
   this.metrics = {
-    circle_radius: this.width / 28,
+    circle_radius: this.width / 20,
     text_shift_x: this.width / 29,
     text_shift_y: this.height / 29,
     font_size: Math.ceil(this.width / 9),
@@ -97,6 +97,20 @@ ChordBox.prototype.draw = function() {
     this.paper.vexLine(this.x, this.y + (fret_spacing * i),
       this.x + (spacing * (this.num_strings - 1)),
       this.y + (fret_spacing * i));
+
+    var dots = [3, 5, 7, 10, 12, 15];
+
+    var makeDot = dots.filter(function(dot) {
+      return (i == dot);
+    }).length;
+
+    if (makeDot) {
+      var x = this.x + (this.spacing * 1.5);
+      var y = this.y + (this.fret_spacing * (i - .5)) ;
+      var c = this.paper.circle(x, y, this.metrics.circle_radius/2);
+      c.attr("fill", this.metrics.chord_fill);
+    }
+
   }
 
   // Draw tuning keys
